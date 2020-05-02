@@ -11,7 +11,8 @@ module.exports = {
     },
     mode: 'development',
     devServer: {
-        contentBase: 'dist'
+        contentBase: 'dist',
+        overlay: true,
     },
     module: {
         rules: [
@@ -25,7 +26,20 @@ module.exports = {
                     // Compiles Sass to CSS
                     'sass-loader',
                 ],
-            }
-        ]
-    }
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: "[name].html",
+                        },
+                    },
+                    'extract-loader',
+                    'html-loader',
+                ],
+            },
+        ],
+    },
 };
