@@ -1,5 +1,6 @@
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
@@ -45,6 +46,7 @@ module.exports = {
     plugins: [
         new HTMLWebpackPlugin({
             template: 'client/index.html',
-        })
+        }),
+        new CleanWebpackPlugin(),
     ]
 };
