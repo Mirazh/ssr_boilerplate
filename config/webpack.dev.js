@@ -8,7 +8,7 @@ const isProd = !isDev;
 module.exports = {
     context: path.resolve(__dirname, '../src'),
     entry: {
-        main: ['@babel/polyfill', './client/main.js'],
+        main: ['@babel/polyfill', './client/App.jsx'],
     },
     output: {
         filename: '[name]-bundle.js',
@@ -29,6 +29,22 @@ module.exports = {
                     options: {
                         presets: [
                             '@babel/preset-env',
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                        ]
+                    },
+                },
+            },
+            {
+                test: /\.jsx$/,
+                exclude: /node_modules/,
+                loader: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-react',
                         ],
                         plugins: [
                             '@babel/plugin-proposal-class-properties',
