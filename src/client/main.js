@@ -1,3 +1,13 @@
 import './main.scss';
 
-alert('Hello World');
+const run = async () => {
+    const text = await Promise.resolve('Hello');
+
+    console.log(text)
+}
+
+run();
+
+class Animal {
+    static name = 'Animal'
+}

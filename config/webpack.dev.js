@@ -8,12 +8,11 @@ const isProd = !isDev;
 module.exports = {
     context: path.resolve(__dirname, '../src'),
     entry: {
-        main: './client/main.js',
+        main: ['@babel/polyfill', './client/main.js'],
     },
     output: {
         filename: '[name]-bundle.js',
         path: path.resolve(__dirname, '../dist'),
-        publicPath: '/',
     },
     mode: 'development',
     devServer: {
@@ -22,6 +21,21 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                        ]
+                    },
+                },
+            },
             {
                 test: /\.scss$/,
                 use: [
