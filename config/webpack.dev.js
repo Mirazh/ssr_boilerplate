@@ -5,15 +5,35 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
+const getBabelOptions = presets => {
+    const options = {
+        presets: [
+            '@babel/preset-env',
+        ],
+        plugins: [
+            '@babel/plugin-proposal-class-properties',
+        ]
+    };
+
+    presets && options.presets.push(...presets);
+
+    return options
+};
+
+
 module.exports = {
     context: path.resolve(__dirname, '../src'),
     entry: {
-        main: ['@babel/polyfill', './client/App.jsx'],
+        main: ['@babel/polyfill', './client/App.tsx'],
     },
     output: {
         filename: '[name]-bundle.js',
         path: path.resolve(__dirname, '../dist'),
     },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
+    },
+    devtool: 'source-map',
     mode: 'development',
     devServer: {
         contentBase: 'dist',
@@ -26,14 +46,7 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            '@babel/preset-env',
-                        ],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties',
-                        ]
-                    },
+                    options: getBabelOptions(),
                 },
             },
             {
@@ -41,16 +54,21 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            '@babel/preset-env',
-                            '@babel/preset-react',
-                        ],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties',
-                        ]
-                    },
+                    options: getBabelOptions(['@babel/preset-react']),
                 },
+            },
+            {
+                test: /\.tsx$/,
+                exclude: /node_modules/,
+                loader: {
+                    loader: 'babel-loader',
+                    options: getBabelOptions(['@babel/preset-react', '@babel/preset-typescript']),
+                },
+            },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                loader: 'source-map-loader',
             },
             {
                 test: /\.scss$/,
@@ -78,5 +96,9 @@ module.exports = {
             template: 'client/index.html',
         }),
         new CleanWebpackPlugin(),
-    ]
+    ],
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM'
+    },
 };
