@@ -3,21 +3,23 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
+// eslint-disable-next-line no-unused-vars
 const isProd = !isDev;
 
-const getBabelOptions = presets => {
+const getBabelOptions = (presets) => {
     const options = {
         presets: [
             '@babel/preset-env',
         ],
         plugins: [
             '@babel/plugin-proposal-class-properties',
-        ]
+        ],
     };
 
+    // eslint-disable-next-line no-unused-expressions
     presets && options.presets.push(...presets);
 
-    return options
+    return options;
 };
 
 
@@ -31,7 +33,7 @@ module.exports = {
         path: path.resolve(__dirname, '../dist'),
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     devtool: 'source-map',
     mode: 'development',
@@ -86,9 +88,9 @@ module.exports = {
                         options: {
                             name: './images/[name].[ext]',
                         },
-                    }
-                ]
-            }
+                    },
+                ],
+            },
         ],
     },
     plugins: [
@@ -98,7 +100,7 @@ module.exports = {
         new CleanWebpackPlugin(),
     ],
     externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM'
+        react: 'React',
+        'react-dom': 'ReactDOM',
     },
 };
