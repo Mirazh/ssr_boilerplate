@@ -7,11 +7,21 @@
     "start": "webpack-dev-server --config=config/webpack.dev.js",
     "dev": "cross-env NODE_ENV=development webpack --config=config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config=config/webpack.dev.js",
-    "lint": "eslint"
+    "lint:js": "eslint . --ext .js,.jsx,.ts,tsx"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint . --fix", "git add"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "7.9.6",
     "@babel/plugin-proposal-class-properties": "7.8.3",
@@ -35,6 +45,8 @@
     "eslint-plugin-react-hooks": "2.5.1",
     "file-loader": "6.0.0",
     "html-webpack-plugin": "4.3.0",
+    "husky": "4.2.5",
+    "lint-staged": "10.2.2",
     "sass": "1.26.5",
     "sass-loader": "8.0.2",
     "source-map-loader": "0.2.4",
