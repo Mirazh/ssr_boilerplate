@@ -1,10 +1,12 @@
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const merge = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const devConfig = require('./webpack.config.dev');
+const prodConfig = require('./webpack.config.prod');
+
 const isDev = process.env.NODE_ENV === 'development';
-// eslint-disable-next-line no-unused-vars
-const isProd = !isDev;
 
 const getBabelOptions = (presets) => {
     const options = {
@@ -16,14 +18,12 @@ const getBabelOptions = (presets) => {
         ],
     };
 
-    // eslint-disable-next-line no-unused-expressions
     presets && options.presets.push(...presets);
 
     return options;
 };
 
-
-module.exports = {
+const common = {
     context: path.resolve(__dirname, '../src'),
     entry: {
         main: ['@babel/polyfill', './client/App.tsx'],
@@ -34,12 +34,6 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    },
-    devtool: 'source-map',
-    mode: 'development',
-    devServer: {
-        contentBase: 'dist',
-        overlay: true,
     },
     module: {
         rules: [
@@ -66,11 +60,6 @@ module.exports = {
                     loader: 'babel-loader',
                     options: getBabelOptions(['@babel/preset-react', '@babel/preset-typescript']),
                 },
-            },
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                loader: 'source-map-loader',
             },
             {
                 test: /\.scss$/,
@@ -104,3 +93,5 @@ module.exports = {
         'react-dom': 'ReactDOM',
     },
 };
+
+module.exports = merge(common, isDev ? devConfig : prodConfig);
