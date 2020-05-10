@@ -40,6 +40,7 @@
         ] }],
         "indent": ["error", 4],
         "react/jsx-indent": ["error", 4],
-        "no-unused-expressions": "off"
+        "no-unused-expressions": "off",
+        "linebreak-style": ["error", "windows"]
     }
 }
