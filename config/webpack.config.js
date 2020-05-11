@@ -11,7 +11,12 @@ const isDev = process.env.NODE_ENV === 'development';
 const getBabelOptions = (presets) => {
     const options = {
         presets: [
-            '@babel/preset-env',
+            [
+                '@babel/preset-env',
+                {
+                    targets: '> 0.25%, not dead',
+                },
+            ],
         ],
         plugins: [
             '@babel/plugin-proposal-class-properties',
@@ -32,6 +37,7 @@ const common = {
         filename: '[name]-bundle.js',
         path: path.resolve(__dirname, '../dist'),
     },
+    target: 'web',
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
